@@ -1,0 +1,43 @@
+sudo: required
+language: generic
+
+branches:
+  only:
+    - travis
+
+addons:
+  apt:
+    packages:
+      - docker-ce
+
+services:
+  - docker
+
+env:
+  global:
+    - DOCKER_COMPOSE_VERSION=1.21.2
+
+matrix:
+  include:
+    - env: DISTRIBUTION=jessie
+
+before_install:
+  # exit on error
+  - set -o errexit
+  - set -o pipefail
+  
+  # Update Docker
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  
+  # setup QEMU
+  - docker run --rm --privileged multiarch/qemu-user-static:register
+
+script:
+  - ./docker-build.sh "${DISTRIBUTION}"
+
+after_success:
+  - echo "Upload debs ???"
+  - ls debs-*/*
