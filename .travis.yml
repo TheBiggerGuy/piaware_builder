@@ -21,6 +21,7 @@ matrix:
   include:
     - env: DISTRIBUTION=wheezy
     - env: DISTRIBUTION=jessie
+    - env: DISTRIBUTION=stretch
 
 before_install:
   # exit on error
