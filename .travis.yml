@@ -19,6 +19,7 @@ env:
 
 matrix:
   include:
+    - env: DISTRIBUTION=wheezy
     - env: DISTRIBUTION=jessie
 
 before_install:
